@@ -31,7 +31,6 @@ class UniCommandWebpackPlugin {
    * 获取小程序的 CLI 位置
    */
   getMiniCli() {
-    console.log(path.normalize(path.join(process.env.MINI_HOME, '/')))
     if (process.env.MINI_HOME) {
       return path.join(process.env.MINI_HOME, '/')
     }
