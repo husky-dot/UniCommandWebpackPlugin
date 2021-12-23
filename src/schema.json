@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "properties": {
+    "autoOpen": {
+      "type": "boolean"
+    },
+    "autoPublish": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}
