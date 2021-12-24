@@ -31,10 +31,18 @@ class UniCommandWebpackPlugin {
    * 获取小程序的 CLI 位置
    */
   getMiniCli() {
-    if (process.env.MINI_HOME) {
-      return path.join(process.env.MINI_HOME, '/')
+    if (process.env.WX_MINI_HOME) {
+      return path.join(process.env.WX_MINI_HOME, '/')
     }
     return ''
+  }
+
+  getExecCli() {
+    // Mac
+    if (os.type() == 'Darwin') {
+      return './cli'
+    }
+    return 'cli'
   }
 
   /**
@@ -50,10 +58,11 @@ class UniCommandWebpackPlugin {
       return
     }
     let commader = ''
+    const cli = this.getExecCli()
     if (process.env.NODE_ENV === 'production') {
-      commader = `cli open --project ${uploadPath}`
+      commader = `${cli} open --project ${uploadPath}`
     } else {
-      commader = `cli open --project ${projectPath}`
+      commader = `${cli} open --project ${projectPath}`
     }
     this.p = exec(commader, {
       cwd: this.minniCli,
@@ -122,8 +131,9 @@ class UniCommandWebpackPlugin {
                 console.log(chalk.bgRed('请填写备注'))
                 return
               }
+              const cli = this.getExecCli()
               this.p = exec(
-                `cli upload --project ${uploadPath} -v ${version} -d ${mark}`,
+                `${cli} upload --project ${uploadPath} -v ${version} -d ${mark}`,
                 {
                   cwd: this.minniCli,
                   stdio: 'inherit',

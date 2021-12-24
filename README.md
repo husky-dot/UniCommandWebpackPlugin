@@ -11,9 +11,9 @@
 
 ### 使用
 
-首先，需要配置系统环境变量，变量名为 `MINI_HOME`，值为小程序开发者工具的安装路径。例如，我使用是 window10，对应配置如下：
+首先，需要配置系统环境变量，变量名为 `WX_MINI_HOME`，值为小程序开发者工具的安装路径。例如，我使用是 window10，对应配置如下：
 
-![](http://www.longstudy.club/100/miniHome.png)
+![](http://www.longstudy.club/100/miniHome2.png)
 
 命令行工具所在位置：
 
