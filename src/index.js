@@ -21,6 +21,7 @@ class UniCommandWebpackPlugin {
     // 验证 options 是否符合规范
 
     this.currentOptions = { ...defaultOptions, ...options }
+    this.isOpened = false
     validate(schema, this.currentOptions, {
       name: 'UniUsingComponentsWebpackPlugin',
     })
@@ -39,16 +40,17 @@ class UniCommandWebpackPlugin {
 
   getExecCli() {
     // Mac
-    if (os.type() == 'Darwin') {
-      return './cli'
+    if (os.type() === 'Windows_NT') {
+      return 'cli'
     }
-    return 'cli'
+    return './cli'
   }
 
   /**
    * 打开工具
    */
   open() {
+    if (this.isOpened) return
     if (!fs.pathExistsSync(this.minniCli)) {
       console.log(
         chalk.bgRed(
@@ -68,6 +70,7 @@ class UniCommandWebpackPlugin {
       cwd: this.minniCli,
       stdio: 'inherit',
     })
+    this.isOpened = true
     this.handleProcess()
   }
 
@@ -141,23 +144,28 @@ class UniCommandWebpackPlugin {
               )
               this.handleProcess()
             })
+        } else {
+          if (this.currentOptions.autoOpen) {
+            this.open()
+          }
         }
       })
   }
 
   handleAfterDone() {
-    // 是否自动打开
-    if (this.currentOptions.autoOpen) {
-      this.open()
-    }
-    // 是否自动发布
+    // 生产环境 ：是否自动发布
     if (
       this.currentOptions.autoPublish &&
       process.env.NODE_ENV === 'production'
     ) {
       setTimeout(() => {
         this.publish()
-      }, 6000)
+      }, 150);
+    } else {
+      // 开发环境  是否自动打开
+      if (this.currentOptions.autoOpen) {
+        this.open()
+      }
     }
   }
 
